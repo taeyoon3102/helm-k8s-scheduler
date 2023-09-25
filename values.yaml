@@ -11,22 +11,26 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-
-# mapping to aws
 envs:
-
+envVariablesFromParams:
 
 #### serviceaccount.yaml ####
 serviceAccount:
   # Specifies whether a service account should be created
-  # create: true
-  # # Annotations to add to the service account
-  # annotations: []
-  #   # eks.amazonaws.com/role-arn: _SERVICE_ACCOUNT_
-  # # The name of the service account to use.
-  # # If not set and create is true, a name is generated using the fullname template
-  # name: _K8S_ACCOUNT_
-  
+  create: true
+  # Annotations to add to the service account
+  annotations:
+    eks.amazonaws.com/role-arn: 
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: 
+
+#### serviceAccountSecret.yaml ####
+serviceAccountSecret:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn:
+  name:
 
 #### _helpers.tpl ####
 name:
@@ -42,7 +46,7 @@ name:
 #   # runAsNonRoot: true
 #   # runAsUser: 1000
 
-# web-service UI port.
+# service UI port.
 uiPort: 4000
 
 service:
@@ -54,8 +58,8 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: nginx
     external-dns.alpha.kubernetes.io/hostname: tytestapp.kedco.click
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
-  hosts:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"  
+  hosts: 
     - host: tytestapp.kedco.click
       paths: ["/"]
   tls: []
@@ -75,6 +79,10 @@ resources:
     cpu: 0.5
     memory: 1G
 
+nodeSelector: {}
+
+# nodeSelector:
+
 tolerations: []
 
 affinity: {}
@@ -89,5 +97,28 @@ autoscaling:
   targetCPUUtilizationPercentage: 60
   # targetMemoryUtilizationPercentage: 80
 
+# livenessProbe:
+#   httpGet:
+#     path: /health
+#     port: http
+#   periodSeconds: 20
+#   initialDelaySeconds: 120
 
-    
+# readinessProbe:
+#   httpGet:
+#     path: /health
+#     port: http
+#   initialDelaySeconds: 10
+#   successThreshold: 1
+#   failureThreshold: 3    
+
+# startupProbe:
+#   httpGet:
+#     path: /health
+#     port: http
+#   initialDelaySeconds: 60
+#   periodSeconds: 30
+#   successThreshold: 1
+#   failureThreshold: 10    
+
+
