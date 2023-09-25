@@ -1,55 +1,52 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "comm-be.fullname" . }}
+  name: {{ template "tytest.fullname" . }}
   labels:
-    {{- include "comm-be.labels" . | nindent 4 }}
+    app: {{ template "tytest.name" . }}
+    chart: {{ template "tytest.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
-      {{- include "comm-be.selectorLabels" . | nindent 6 }}
+      app: {{ template "tytest.name" . }}
+      release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        {{- include "comm-be.selectorLabels" . | nindent 8 }}
+        app: {{ template "tytest.name" . }}
+        release: {{ .Release.Name }}
     spec:
-    {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-      serviceAccountName: {{ include "comm-be.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.name }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            {{- toYaml .Values.envs | nindent 12 }}    
           ports:
             - name: http
-              containerPort: {{ .Values.uiPort }}
+              containerPort: 4000
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            httpGet:
+              path: /
+              port: http
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
-          startupProbe:
-            {{- toYaml .Values.startupProbe | nindent 12 }}
+            httpGet:
+              path: /
+              port: http
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+{{ toYaml . | indent 8 }}
+    {{- end }}
     {{- with .Values.affinity }}
       affinity:
-        {{- toYaml . | nindent 8 }}
+{{ toYaml . | indent 8 }}
     {{- end }}
     {{- with .Values.tolerations }}
       tolerations:
-        {{- toYaml . | nindent 8 }}
+{{ toYaml . | indent 8 }}
     {{- end }}
