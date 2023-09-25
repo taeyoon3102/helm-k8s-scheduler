@@ -1,12 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "tytest.fullname" . }}
+  name: {{ include "comm-be.fullname" . }}
   labels:
-    app: {{ template "tytest.name" . }}
-    chart: {{ template "tytest.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "comm-be.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -15,5 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ template "tytest.name" . }}
-    release: {{ .Release.Name }}
+    {{- include "comm-be.selectorLabels" . | nindent 4 }}
