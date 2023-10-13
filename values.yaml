@@ -36,6 +36,7 @@ serviceAccountSecret:
 #### _helpers.tpl ####
 schedule: ty-schedule-office-hours
 
+
 # podSecurityContext: {}
 #   # fsGroup: 2000
 
@@ -59,7 +60,7 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: alb
   hosts:
-    - host: tytest.kedco.click
+    - host: tytestrollout.kedco.click
       paths: ["/"]
   tls: []
   #  - secretName: chart-example-tls
