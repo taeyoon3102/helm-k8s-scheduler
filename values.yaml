@@ -34,7 +34,6 @@ serviceAccountSecret:
   name:
 
 #### _helpers.tpl ####
-name: ty-test-app
 schedule: ty-schedule-office-hours
 
 # podSecurityContext: {}
