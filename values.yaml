@@ -34,7 +34,8 @@ serviceAccountSecret:
   name:
 
 #### _helpers.tpl ####
-schedule: ty-schedule-office-hours
+schedule: test-office-hours
+
 
 # podSecurityContext: {}
 #   # fsGroup: 2000
