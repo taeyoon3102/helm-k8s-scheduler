@@ -2,8 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "comm-be.fullname" . }}
-  labels:
-    {{- include "comm-be.labels" . | nindent 4 }}
+  annotations:
+    {{- if .Values.Schedule }}
+    Schedule: {{ .Values.Schedule }}
+    {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:

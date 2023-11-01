@@ -33,8 +33,8 @@ serviceAccountSecret:
     eks.amazonaws.com/role-arn:
   name:
 
-#### _helpers.tpl ####
-schedule: ty-schedule-office-hours
+#### scheduler for metadata annotations ####
+Schedule: ty-schedule-office-hours
 
 
 
