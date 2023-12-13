@@ -57,11 +57,11 @@ service:
   port: 80
 
 ingress:
-  enabled: false
+  enabled: true
   annotations:
     kubernetes.io/ingress.class: alb
   hosts:
-    - host: tytestrollout.kedco.click
+    - host: tytestdeployment.kedco.click
       paths: ["/"]
   tls: []
   #  - secretName: chart-example-tls
