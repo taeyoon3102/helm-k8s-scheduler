@@ -10,6 +10,7 @@ metadata:
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
+    "alb.ingress.kubernetes.io/target-type": ip
   {{- end }}
 spec:
 {{- if .Values.ingress.tls }}
